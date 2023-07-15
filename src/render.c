@@ -121,10 +121,12 @@ void render_game_menu(
   mvwaddstr(window, text_y + 1, text_x, "====");
 
   text_x = 12;
-  text_y += 3;
   int space_y = 2;
   if (game_board_is_playing(game_board)) {
+    text_y += 3;
     mvwaddstr(window, text_y + space_y * 0, text_x, "Resume");
+  } else {
+    text_y += 2;
   }
   mvwaddstr(window, text_y + space_y * 1, text_x, "New Game");
   mvwaddstr(window, text_y + space_y * 2, text_x, "Manual");
@@ -149,15 +151,15 @@ void render_menu(
 
 
   int text_x = window_manager_get_width(window_manager, WINDOW_ID_MENU) / 2 - 11;
-  int text_y = 3;
+  int text_y = 2;
   mvwaddstr(window, text_y, text_x, "CHOOSE YOUR DIFFICULTY");
   mvwaddstr(window, text_y + 1, text_x, "======================");
 
-  int start_x = 10;
+  int start_x = 9;
   int start_y = 6;
-  mvwaddstr(window, start_y + 0, start_x + 2, "Easy");
-  mvwaddstr(window, start_y + 2, start_x + 2, "Medium");
-  mvwaddstr(window, start_y + 4, start_x + 2, "Hard");
+  mvwaddstr(window, start_y + 0, start_x + 3, "Easy");
+  mvwaddstr(window, start_y + 2, start_x + 3, "Medium");
+  mvwaddstr(window, start_y + 4, start_x + 3, "Hard");
 
   // Render cursor.
   mvwaddch(window, start_y + (menu->menu_selection * 2), start_x, '>');
