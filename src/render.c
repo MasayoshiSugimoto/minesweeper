@@ -19,6 +19,11 @@ void render_center_text(
 }
 
 
+void render_game_board_border_cell() {
+  addch(' ');
+}
+
+
 void render_game_board(struct GameBoard* game_board, int left, int top) {
   int width = game_board->width;
   int height = game_board->height;
@@ -28,17 +33,17 @@ void render_game_board(struct GameBoard* game_board, int left, int top) {
 
   int line = top;
   move(line, left);
-  addch(ACS_ULCORNER);
+  render_game_board_border_cell();
   for (int x = 0; x < width; x++) {
-    addch(ACS_HLINE);
+    render_game_board_border_cell();
   }
-  addch(ACS_URCORNER);
+  render_game_board_border_cell();
 
   line++;
 
   for (int y = 0; y < height; y++) {
     move(line, left);
-    addch(ACS_VLINE);
+    render_game_board_border_cell();
     for (int x = 0; x < width; x++) {
       int i = game_board_get_index(game_board, x, y);
       if (visibility_map[i]) {
@@ -65,16 +70,16 @@ void render_game_board(struct GameBoard* game_board, int left, int top) {
         addch(BOARD_CELL_TYPE_HIDDEN);
       }
     }
-    addch(ACS_VLINE);
+    render_game_board_border_cell();
     line++;
   }
 
   move(line, left);
-  addch(ACS_LLCORNER);
+  render_game_board_border_cell();
   for (int x = 0; x < width; x++) {
-    addch(ACS_HLINE);
+    render_game_board_border_cell();
   }
-  addch(ACS_LRCORNER);
+  render_game_board_border_cell();
 }
 
 
