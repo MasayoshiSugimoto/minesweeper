@@ -39,6 +39,7 @@ void ui_menu_init(struct WindowManager* window_manager) {
 
 void ui_init(struct UI* ui) {
   ui_init_ncurses();
+  color_init();
   window_manager_init(&ui->window_manager);
   ui_game_over_init(&ui->window_manager);
   ui_game_won_init(&ui->window_manager);

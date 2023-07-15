@@ -43,16 +43,24 @@ void render_game_board(struct GameBoard* game_board, int left, int top) {
       int i = game_board_get_index(game_board, x, y);
       if (visibility_map[i]) {
         if (board[i] == BOARD_CELL_TYPE_MINE) {
+          attron(COLOR_PAIR(COLOR_PAIR_ID_MINE));
           addch(BOARD_CELL_TYPE_MINE);
+          attroff(COLOR_PAIR(COLOR_PAIR_ID_MINE));
         } else if (board[i] == BOARD_CELL_TYPE_EMPTY) {
           addch(BOARD_CELL_TYPE_EMPTY);
         } else {
+          attron(COLOR_PAIR(COLOR_PAIR_ID_ZERO + board[i]));
           addch((char)'0' + board[i]);
+          attroff(COLOR_PAIR(COLOR_PAIR_ID_ZERO + board[i]));
         }
       } else if (markers[i] == BOARD_CELL_TYPE_OK_MARKER) {
+        attron(COLOR_PAIR(COLOR_PAIR_ID_OK_MARKER));
         addch(BOARD_CELL_TYPE_OK_MARKER);
+        attroff(COLOR_PAIR(COLOR_PAIR_ID_OK_MARKER));
       } else if (markers[i] == BOARD_CELL_TYPE_MINE_MARKER) {
+        attron(COLOR_PAIR(COLOR_PAIR_ID_MINE_MARKER));
         addch(BOARD_CELL_TYPE_MINE_MARKER);
+        attroff(COLOR_PAIR(COLOR_PAIR_ID_MINE_MARKER));
       } else {
         addch(BOARD_CELL_TYPE_HIDDEN);
       }

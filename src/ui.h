@@ -7,6 +7,7 @@
 #include "window_manager.h"
 #include "terminal.h"
 #include "manual.h"
+#include "color.h"
 
 
 /**
