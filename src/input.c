@@ -419,7 +419,12 @@ void input_manual_update(struct Manual* manual, int input, struct Game* game) {
 
 
 void input_update(struct Game* game, struct UI* ui) {
-  if (game->game_state == GAME_STATE_START_SCREEN) return;
+  if (
+      game->game_state == GAME_STATE_START_SCREEN
+      || game->game_state == GAME_STATE_CREDITS
+  ) {
+    return;
+  }
 
   int input = getch();
   input_log_key_pressed(input);

@@ -11,6 +11,7 @@ const char* g_game_state_strings[] = {
   "GAME_STATE_MENU",
   "GAME_STATE_MANUAL",
   "GAME_STATE_START_SCREEN",
+  "GAME_STATE_CREDITS",
   "GAME_STATE_QUIT",
   "GAME_STATE_MAX"
 };

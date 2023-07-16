@@ -273,6 +273,14 @@ void render_start_screen(struct Terminal* terminal) {
 }
 
 
+void render_credits(struct Terminal* terminal) {
+  char* developed_by = "Developed by Masayoshi Sugimoto";
+  int top = terminal->height / 2;
+  int left = (terminal->width / 2) - (strlen(developed_by) / 2);
+  mvaddstr(top, left, developed_by);
+}
+
+
 void render(struct Vector center, struct UI* ui, struct Game* game) {
   enum GameState game_state = game->game_state;
   struct WindowManager* window_manager = &ui->window_manager;
@@ -329,6 +337,12 @@ void render(struct Vector center, struct UI* ui, struct Game* game) {
       break;
     case GAME_STATE_START_SCREEN:
       render_start_screen(&ui->terminal);
+
+      curs_set(CURSOR_VISIBILITY_INVISIBLE);
+      move(0, 0);
+      break;
+    case GAME_STATE_CREDITS:
+      render_credits(&ui->terminal);
 
       curs_set(CURSOR_VISIBILITY_INVISIBLE);
       move(0, 0);

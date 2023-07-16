@@ -39,6 +39,16 @@ void main_update_game(struct Game* game, struct UI* ui) {
       now_millisecond = get_current_millisecond();
       delta_time_millisecond = now_millisecond - ui->start_screen.start_millisecond;
       if (delta_time_millisecond >= ui->start_screen.logo_display_time_millisecond) {
+        log_info("New game_state: GAME_STATE_CREDITS");
+        game->game_state = GAME_STATE_CREDITS;
+      }
+      break;
+    case GAME_STATE_CREDITS:
+      now_millisecond = get_current_millisecond();
+      delta_time_millisecond = now_millisecond - ui->start_screen.start_millisecond;
+      int total_time = ui->start_screen.logo_display_time_millisecond
+        + ui->start_screen.made_by_time_millisecond;
+      if (delta_time_millisecond >= total_time) {
         log_info("New game_state: GAME_STATE_START_MENU");
         game->game_state = GAME_STATE_START_MENU;
       }
