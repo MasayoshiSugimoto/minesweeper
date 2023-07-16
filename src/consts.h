@@ -6,6 +6,7 @@
 #define DEBUG_ENABLE_TEST false
 
 
+#define TERMINAL_MIN_WIDTH 60
 #define TERMINAL_MIN_HEIGHT 20
 
 

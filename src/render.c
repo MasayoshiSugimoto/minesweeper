@@ -216,13 +216,72 @@ void render_manual(
 }
 
 
+void render_start_screen(struct Terminal* terminal) {
+  log_info("BEGIN render_start_screen()");
+
+  FILE* file = fopen("title.txt", "r");
+  if (file == NULL) {
+    log_fatal("Could not load `title.txt`.");
+  }
+
+  size_t buf_size = 512;
+  char buf[buf_size];
+  int c;
+  int length = 0;
+  for (int i = 0; i < buf_size; i++) {
+    c = fgetc(file);
+    if (c == EOF) {
+      length = i;
+      break;
+    }
+    buf[i] = c;
+  }
+  fclose(file);
+  log_info_f("Buffer size: %d", length);
+
+  // Count number of lines.
+  int line_number = 0;
+  for (int i = 0; i < length; i++) {
+    if (buf[i] == '\n') line_number++;
+  }
+  log_info_f("Number of lines: %d", line_number);
+
+  // Count width.
+  int logo_width = 0;
+  for (int i = 0; i < length; i++) {
+    if (buf[i] == '\n') {
+      logo_width = i;
+      break;
+    }
+  }
+  log_info_f("Logo width: %d", logo_width);
+
+  int y = (terminal->height / 2) - (line_number / 2);
+  int left = (terminal->width / 2) - (logo_width / 2);
+  move(y++, left);
+  for (int i = 0; i < length; i++) {
+    if (buf[i] == '\n') {
+      move(y++, left);
+    } else if (buf[i] == EOF) {
+      break;
+    } else {
+      addch(buf[i]);
+    }
+  }
+
+  log_info("END render_start_screen()");
+}
+
+
 void render(struct Vector center, struct UI* ui, struct Game* game) {
   enum GameState game_state = game->game_state;
   struct WindowManager* window_manager = &ui->window_manager;
 
   erase();
   window_manager_erase(window_manager);
-  render_help_menu();
+  if (game_state != GAME_STATE_START_SCREEN) {
+    render_help_menu();
+  }
 
   switch (game_state) {
     case GAME_STATE_START_MENU:
@@ -264,6 +323,12 @@ void render(struct Vector center, struct UI* ui, struct Game* game) {
       break;
     case GAME_STATE_MANUAL:
       render_manual(&ui->manual, window_manager, center);
+
+      curs_set(CURSOR_VISIBILITY_INVISIBLE);
+      move(0, 0);
+      break;
+    case GAME_STATE_START_SCREEN:
+      render_start_screen(&ui->terminal);
 
       curs_set(CURSOR_VISIBILITY_INVISIBLE);
       move(0, 0);

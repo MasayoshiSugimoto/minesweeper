@@ -419,6 +419,8 @@ void input_manual_update(struct Manual* manual, int input, struct Game* game) {
 
 
 void input_update(struct Game* game, struct UI* ui) {
+  if (game->game_state == GAME_STATE_START_SCREEN) return;
+
   int input = getch();
   input_log_key_pressed(input);
   enum GameState game_state = game->game_state;
@@ -448,6 +450,9 @@ void input_update(struct Game* game, struct UI* ui) {
       break;
     case GAME_STATE_MANUAL:
       input_manual_update(&ui->manual, input, game);
+      break;
+    case GAME_STATE_START_SCREEN:
+      // Do nothing.
       break;
     default:
       log_fatal_f("Invalid game_state=%d", game_state);

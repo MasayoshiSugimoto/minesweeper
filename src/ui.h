@@ -8,6 +8,7 @@
 #include "terminal.h"
 #include "manual.h"
 #include "color.h"
+#include "start_screen.h"
 
 
 /**
@@ -19,6 +20,7 @@ struct UI {
   struct WindowManager window_manager;
   struct Terminal terminal;
   struct Manual manual;
+  struct StartScreen start_screen;
 };
 
 

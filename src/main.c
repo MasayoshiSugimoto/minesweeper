@@ -24,13 +24,28 @@ struct UI ui;
 struct Game game;
 
 
-void main_update_game(struct Game* game) {
-  if (game->game_state == GAME_STATE_IN_GAME) {
-    if (game_board_is_lost(&game->game_board)) {
-      game_set_game_state(game, GAME_STATE_GAME_OVER);
-    } else if (game_board_is_win(&game->game_board)) {
-      game_set_game_state(game, GAME_STATE_GAME_WON);
-    }
+void main_update_game(struct Game* game, struct UI* ui) {
+  uint64_t now_millisecond;
+  uint64_t delta_time_millisecond;
+  switch (game->game_state) {
+    case GAME_STATE_IN_GAME:
+      if (game_board_is_lost(&game->game_board)) {
+        game_set_game_state(game, GAME_STATE_GAME_OVER);
+      } else if (game_board_is_win(&game->game_board)) {
+        game_set_game_state(game, GAME_STATE_GAME_WON);
+      }
+      break;
+    case GAME_STATE_START_SCREEN:
+      now_millisecond = get_current_millisecond();
+      delta_time_millisecond = now_millisecond - ui->start_screen.start_millisecond;
+      if (delta_time_millisecond >= ui->start_screen.logo_display_time_millisecond) {
+        log_info("New game_state: GAME_STATE_START_MENU");
+        game->game_state = GAME_STATE_START_MENU;
+      }
+      break;
+    default:
+      // Do nothing.
+      break;
   }
 }
 
@@ -56,11 +71,11 @@ int main() {
     log_info_f("terminal={width:%d, height:%d}", terminal->width, terminal->height);
     struct Vector center = terminal_center(terminal);
 
-    if (terminal->height < TERMINAL_MIN_HEIGHT) {
-      log_info("Terminal height is less than the minimum allowed.");
+    if (terminal->height < TERMINAL_MIN_HEIGHT || terminal->width < TERMINAL_MIN_WIDTH) {
+      log_info("Terminal is too small. Please resize the terminal.");
       erase();
       addstr(
-          "Terminal height is less than the minimum allowed.\n"
+          "Terminal is too small.\n"
           "Please resize the terminal.\n"
       );
       refresh();
@@ -76,7 +91,7 @@ int main() {
       break;
     }
 
-    main_update_game(&game);
+    main_update_game(&game, &ui);
   }
 
   endwin();  // End ncurses.

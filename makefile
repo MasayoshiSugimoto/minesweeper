@@ -16,10 +16,10 @@ $(PROGRAM): $(OBJS)
 	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
 
 .build:
-	mkdir .build
+	mkdir -p .build
 
 # Generate dependence files
-$(BUILD_DIR)/%.d: $(SRC_DIR)/%.c $(BUILD_DIR)
+$(BUILD_DIR)/%.d: $(SRC_DIR)/%.c .build
 	$(CC) $(CFLAGS) $(DEP_OPT) $< | sed -E 's;^(.*)\.o:;$(BUILD_DIR)/\1.o:;' > $@
 
 # Generate objects files

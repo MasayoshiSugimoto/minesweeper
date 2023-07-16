@@ -10,6 +10,7 @@ const char* g_game_state_strings[] = {
   "GAME_STATE_GAME_WON",
   "GAME_STATE_MENU",
   "GAME_STATE_MANUAL",
+  "GAME_STATE_START_SCREEN",
   "GAME_STATE_QUIT",
   "GAME_STATE_MAX"
 };
@@ -20,7 +21,7 @@ void game_init(struct Game* game, int width, int height) {
   game->cursor.x = 0;
   game->cursor.y = 0;
   game_board_init(&game->game_board, width, height);
-  game->game_state = GAME_STATE_START_MENU;
+  game->game_state = GAME_STATE_START_SCREEN;
 }
 
 
